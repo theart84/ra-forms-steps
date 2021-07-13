@@ -1,10 +1,19 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import PropTypes from 'prop-types';
+
 import shortid from 'shortid';
 import {convertDate} from "../../utils/convertDate";
 
+
 const AddNewWorkout = (props) => {
   const [inputDate, setInputDate] = useState('');
-  const [inputRange, setInputRange] = useState('');
+  const [inputDistance, setInputDistance] = useState('');
+
+  useEffect(() => {
+      setInputDate(props.data.date);
+      setInputDistance(props.data.distance);
+  }, [props.data.date, props.data.distance]);
+
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -12,14 +21,14 @@ const AddNewWorkout = (props) => {
     const payload = {
       id: shortid.generate(),
       date: normalizeDate,
-      range: inputRange
+      distance: inputDistance
     }
     props.addNewWorkout(payload);
   }
 
   const onChangeHandler = (event) => {
     const {name, value} = event.target;
-    name === 'date' ? setInputDate(value) : setInputRange(value);
+    name === 'date' ? setInputDate(value) : setInputDistance(value);
   }
 
   return (
@@ -41,7 +50,7 @@ const AddNewWorkout = (props) => {
             className="form-control"
             placeholder="Введите пройденное расстояние..."
             name="range"
-            value={inputRange}
+            value={inputDistance}
             onChange={onChangeHandler}
           />
         </div>
@@ -51,6 +60,11 @@ const AddNewWorkout = (props) => {
       </div>
     </form>
   )
+}
+
+AddNewWorkout.propTypes = {
+  addNewWorkout: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired
 }
 
 export default AddNewWorkout;

@@ -1,11 +1,16 @@
 import React, {useRef} from 'react';
+import PropTypes from 'prop-types';
 
 const WorkoutItem = (props) => {
   const ref = useRef();
   const convertDate = new Date(props.date).toLocaleString().slice(0, 10);
 
-  const onClickHandler = () => {
-    props.deleteWorkout(ref.current.dataset.id)
+  const onClickHandler = (event) => {
+    const {name} = event.target;
+    const {id} = ref.current.dataset;
+    name === 'edit'
+      ? props.editWorkout(id)
+      : props.deleteWorkout(id);
   }
 
   return (
@@ -16,19 +21,39 @@ const WorkoutItem = (props) => {
       data-id={props.id}
     >
       <div className="col text-center">{convertDate}</div>
-      <div className="col text-center">{props.range}</div>
+      <div className="col text-center">{props.distance}</div>
       <div className="col text-center">
         <div className="row">
           <div className="col">
-            <button className="btn btn-primary">Редактировать</button>
+            <button
+              name="edit"
+              className="btn btn-primary"
+              onClick={onClickHandler}
+            >
+              Редактировать
+            </button>
           </div>
           <div className="col">
-            <button className="btn btn-primary" onClick={onClickHandler}>Удалить</button>
+            <button
+              name="delete"
+              className="btn btn-primary"
+              onClick={onClickHandler}
+            >
+              Удалить
+            </button>
           </div>
         </div>
       </div>
     </div>
   )
 };
+
+WorkoutItem.propTypes = {
+  date: PropTypes.number.isRequired,
+  deleteWorkout: PropTypes.func.isRequired,
+  distance: PropTypes.number.isRequired,
+  editWorkout: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired
+}
 
 export default WorkoutItem;

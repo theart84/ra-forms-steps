@@ -1,15 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import WorkoutItem from "./WorkoutItem/WorkoutItem";
 
 const WorkoutList = (props) => {
+  console.log(props)
   const sortWorkouts = props.workouts.sort((prev, next) => (prev.date < next.date ? -1 : 1));
   const workoutItems = sortWorkouts.map(workout => (
     <WorkoutItem
     key={workout.id}
     id={workout.id}
     date={workout.date}
-    range={workout.range}
+    distance={workout.distance}
     deleteWorkout={props.deleteWorkout}
+    editWorkout={props.editWorkout}
     />
   ))
   return (
@@ -32,5 +35,11 @@ const WorkoutList = (props) => {
     </div>
   );
 };
+
+WorkoutList.propTypes = {
+  deleteWorkout: PropTypes.func.isRequired,
+  editWorkout: PropTypes.func.isRequired,
+  workouts: PropTypes.array.isRequired
+}
 
 export default WorkoutList;
