@@ -1,27 +1,25 @@
-import React, {useRef} from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef } from "react";
+import PropTypes from "prop-types";
 
-const WorkoutItem = (props) => {
+const WorkoutItem = ({ date, deleteWorkout, distance, editWorkout, id }) => {
   const ref = useRef();
-  const convertDate = new Date(props.date).toLocaleString().slice(0, 10);
+  const convertDate = new Date(date).toLocaleString().slice(0, 10);
 
   const onClickHandler = (event) => {
-    const {name} = event.target;
-    const {id} = ref.current.dataset;
-    name === 'edit'
-      ? props.editWorkout(id)
-      : props.deleteWorkout(id);
-  }
+    const { name } = event.target;
+    const { id } = ref.current.dataset;
+    name === "edit" ? editWorkout(id) : deleteWorkout(id);
+  };
 
   return (
     <div
       ref={ref}
       className="row justify-content-between align-items-center pb-2 mb-2"
-      style={{borderBottom: "1px solid #dee2e6"}}
-      data-id={props.id}
+      style={{ borderBottom: "1px solid #dee2e6" }}
+      data-id={id}
     >
       <div className="col text-center">{convertDate}</div>
-      <div className="col text-center">{props.distance}</div>
+      <div className="col text-center">{distance}</div>
       <div className="col text-center">
         <div className="row">
           <div className="col">
@@ -45,7 +43,7 @@ const WorkoutItem = (props) => {
         </div>
       </div>
     </div>
-  )
+  );
 };
 
 WorkoutItem.propTypes = {
@@ -53,7 +51,7 @@ WorkoutItem.propTypes = {
   deleteWorkout: PropTypes.func.isRequired,
   distance: PropTypes.number.isRequired,
   editWorkout: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
-}
+  id: PropTypes.string.isRequired,
+};
 
 export default WorkoutItem;

@@ -1,19 +1,16 @@
-import {useEffect, useState} from "react";
-import PropTypes from 'prop-types';
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import shortid from "shortid";
+import { convertDate } from "../../utils/convertDate";
 
-import shortid from 'shortid';
-import {convertDate} from "../../utils/convertDate";
-
-
-const AddNewWorkout = (props) => {
-  const [inputDate, setInputDate] = useState('');
-  const [inputDistance, setInputDistance] = useState('');
+const AddNewWorkout = ({ data, addNewWorkout }) => {
+  const [inputDate, setInputDate] = useState("");
+  const [inputDistance, setInputDistance] = useState("");
 
   useEffect(() => {
-      setInputDate(props.data.date);
-      setInputDistance(props.data.distance);
-  }, [props.data.date, props.data.distance]);
-
+    setInputDate(data.date);
+    setInputDistance(data.distance);
+  }, [data.date, data.distance]);
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -21,20 +18,23 @@ const AddNewWorkout = (props) => {
     const payload = {
       id: shortid.generate(),
       date: normalizeDate,
-      distance: inputDistance
-    }
-    props.addNewWorkout(payload);
-  }
+      distance: Number(inputDistance),
+    };
+    addNewWorkout(payload);
+    setInputDate("");
+    setInputDistance("");
+  };
 
   const onChangeHandler = (event) => {
-    const {name, value} = event.target;
-    name === 'date' ? setInputDate(value) : setInputDistance(value);
-  }
+    const { name, value } = event.target;
+    name === "date" ? setInputDate(value) : setInputDistance(value);
+  };
 
   return (
     <form className="mb-5" onSubmit={onSubmitHandler}>
       <div className="row">
-        <div className="col">Дата(ДД.ММ.ГГ)
+        <div className="col">
+          Дата(ДД.ММ.ГГ)
           <input
             type="text"
             className="form-control"
@@ -44,7 +44,8 @@ const AddNewWorkout = (props) => {
             onChange={onChangeHandler}
           />
         </div>
-        <div className="col">Пройдено, км
+        <div className="col">
+          Пройдено, км
           <input
             type="text"
             className="form-control"
@@ -59,12 +60,12 @@ const AddNewWorkout = (props) => {
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
 AddNewWorkout.propTypes = {
   addNewWorkout: PropTypes.func.isRequired,
-  data: PropTypes.object.isRequired
-}
+  data: PropTypes.object.isRequired,
+};
 
 export default AddNewWorkout;
