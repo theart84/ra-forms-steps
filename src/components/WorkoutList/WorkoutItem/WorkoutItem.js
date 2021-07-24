@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const WorkoutItem = ({ date, deleteWorkout, distance, editWorkout, id }) => {
   const ref = useRef();
-  const convertDate = new Date(date).toLocaleString().slice(0, 10);
+  const convertDate = new Date(date).toISOString().slice(0,10).split('-').reverse().join('.');
 
   const onClickHandler = (event) => {
     const { name } = event.target;

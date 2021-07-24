@@ -15,7 +15,8 @@ function App() {
   const [editData, setEditData] = useState({date: '', distance: ''});
 
   const addNewWorkoutHandler = (newWorkout) => {
-    const candidate = workouts.find(workout => workout.date === newWorkout.date);
+
+    const candidate = workouts.find(workout => workout.id === newWorkout.id);
     if (candidate) {
       const newObj = {
         ...candidate,
@@ -42,7 +43,8 @@ function App() {
   const editWorkoutHandler = (id) => {
     const findWorkout = workouts.find(workout => workout.id === id);
     setEditData({
-      date: new Date(findWorkout.date).toLocaleString().slice(0, 10),
+      id: findWorkout.id,
+      date: new Date(findWorkout.date).toISOString().slice(0,10).split('-').reverse().join('.'),
       distance: findWorkout.distance
     })
   }

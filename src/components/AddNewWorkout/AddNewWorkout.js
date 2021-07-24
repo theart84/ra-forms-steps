@@ -6,23 +6,26 @@ import { convertDate } from "../../utils/convertDate";
 const AddNewWorkout = ({ data, addNewWorkout }) => {
   const [inputDate, setInputDate] = useState("");
   const [inputDistance, setInputDistance] = useState("");
+  const [id, setId] = useState(null);
 
   useEffect(() => {
     setInputDate(data.date);
     setInputDistance(data.distance);
-  }, [data.date, data.distance]);
+    setId(data.id);
+  }, [data.date, data.distance, data.id]);
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
     const normalizeDate = convertDate(inputDate);
     const payload = {
-      id: shortid.generate(),
+      id: id || shortid.generate(),
       date: normalizeDate,
       distance: Number(inputDistance),
     };
     addNewWorkout(payload);
     setInputDate("");
     setInputDistance("");
+    setId('');
   };
 
   const onChangeHandler = (event) => {
